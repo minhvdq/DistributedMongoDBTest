@@ -14,6 +14,8 @@ const mongodbPass = process.env.MONGODB_PASS
 
 console.log('table name is ', tableName)
 console.log('password is: ', mongodbPass)
+
+
 const mongodbUrl = `mongodb+srv://fullstack:${mongodbPass}@cluster0.vzqds2z.mongodb.net/${tableName}?retryWrites=true&w=majority&appName=Cluster0`
 
 
