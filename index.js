@@ -4,13 +4,14 @@ const app = express();
 const axios = require('axios')
 const serverVariables = require('./serverVariables')
 const mongoose = require('mongoose')
+const IdenFace = require('./models/IdenFace')
+const UnknownFace = require('./models/UnknownFace')
+const middlewares = require('./utils/middlewares')
 
 const PORT = process.argv[2] || 3000;
 const tableName = process.argv[3]
 const mongodbPass = process.env.MONGODB_PASS
-const IdenFace = require('./models/IdenFace')
-const UnknownFace = require('./models/UnknownFace')
-const middlewares = require('./utils/middlewares')
+
 console.log('table name is ', tableName)
 console.log('password is: ', mongodbPass)
 const mongodbUrl = `mongodb+srv://fullstack:${mongodbPass}@cluster0.vzqds2z.mongodb.net/${tableName}?retryWrites=true&w=majority&appName=Cluster0`
