@@ -10,7 +10,7 @@ const middlewares = require('./utils/middlewares')
 
 const faceRouter = require('./controllers/Face');
 const mainRouter = require('./controllers/Main');
-const zkClient = require('./cluster/zooFunc')
+const zkClient = require('./cluster/zooFunc_2')
 
 const PORT = process.argv[2] || 3000;
 serverVariables.port = PORT

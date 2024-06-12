@@ -106,6 +106,7 @@ function updateAddresses(zookeeper) {
         let completed = 0;
         console.log('here1')
         serverVariables.slaves = [];
+        console.log('slaves size is', serverVariables.slaves.length)
         console.log('here2')
         children.forEach((regChild) => {
             const znodeFullPath = `${slaveRegistryZnode}/${regChild}`;

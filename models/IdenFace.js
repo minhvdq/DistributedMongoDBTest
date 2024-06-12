@@ -17,6 +17,10 @@ const idenFaceSchema = new mongoose.Schema({
     Atribute: {
         type: String,
         required: true
+    },
+    Version:{
+        type: Number,
+        required: true
     }
 })
 
