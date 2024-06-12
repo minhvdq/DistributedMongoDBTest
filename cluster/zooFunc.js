@@ -1,6 +1,7 @@
 const zookeeper = require('node-zookeeper-client')
 const serverVariables = require('../serverVariables')
 const serviceRegistry = require('./serviceRegistry')
+const axios = require('axios')
 
 const client = zookeeper.createClient('localhost:2181', {sessionTimeout: 1000})
 const electionPath = '/dbelection'
@@ -33,6 +34,8 @@ function checkLeader() {
 
                 serverVariables.master = leaderUrl
                 console.log('leader url is ', leaderUrl)
+                
+                
             })
             const index = children.indexOf(currentNodePath.split('/').pop());
             if (index > 0) {

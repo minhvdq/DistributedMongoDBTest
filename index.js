@@ -13,6 +13,7 @@ const mainRouter = require('./controllers/Main');
 const zkClient = require('./cluster/zooFunc')
 
 const PORT = process.argv[2] || 3000;
+serverVariables.port = PORT
 const tableName = process.argv[3]
 const mongodbPass = process.env.MONGODB_PASS
 
@@ -23,11 +24,11 @@ console.log('password is: ', mongodbPass)
 const mongodbUrl = `mongodb+srv://fullstack:${mongodbPass}@cluster0.vzqds2z.mongodb.net/${tableName}?retryWrites=true&w=majority&appName=Cluster0`
 
 
-const role = PORT == 3000 ? "master" : "slave"
+// const role = PORT == 3000 ? "master" : "slave"
+// serverVariables.role = role
+// serverVariables.master = 'localhost:3000'
 
-serverVariables.port = PORT
-
-console.log(`running server on port ${PORT} as a ${role}`)
+console.log(`running server on port ${PORT} as a ${serverVariables.role}`)
 console.log(`connecting to MongoDB`)
 
 mongoose.set('strictQuery', false)
@@ -39,33 +40,32 @@ mongoose.connect(mongodbUrl).then(result => {
 
 zkClient.connect()
 
-let server = app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
 
+// if( role  === 'slave' ){
+//     console.log('connecting to master')
+//     if( serverVariables.master === '' ){
+//         console.log('master is null')
+//     }
 
-
-const leaderElection = require('./cluster/leaderElection')
-const serviceRegistry = require('./cluster/serviceRegistry')
-
-if( role  === 'slave' ){
-    console.log('connecting to master')
-
-    axios({
-        method: "post",
-        url: "http://localhost:3000/connect",
-        data: {
-            port: `${PORT}`,
-            address: `${server.address().address}`
-        }
-    })
-}
+//     axios({
+//         method: "post",
+//         url: `http://${serverVariables.master}/connect`,
+//         data: {
+//             port: `${PORT}`,
+//             // address: `${server.address().address}`
+//         }
+//     })
+// }
 
 app.use(express.json())
 app.use(middlewares.requestLogger)
 app.use(middlewares.tokenExtractor)
 
 app.use('/face', faceRouter )
+
+app.get( '/status', (req, res) => {
+    res.status(200).send(`server is runnig stably on port ${serverVariables.port} as a ${serverVariables.role}`)
+})
 
 app.post( '/connect', async( req, res ) => {
     const reqPort = req.socket.remotePort
@@ -110,3 +110,7 @@ app.post( '/clearall', async( req, res ) => {
 
 app.use(middlewares.unknownEndpoint)
 app.use(middlewares.errorHandler)
+
+let server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

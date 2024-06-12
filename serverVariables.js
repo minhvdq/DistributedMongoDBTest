@@ -1,7 +1,7 @@
 
 const serverVariables = {
     slaves: [],
-    master: 3000,
+    master: '',
     role: '',
     currentRegistryNode: null,
     currentElectNode: null,

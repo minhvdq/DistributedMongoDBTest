@@ -97,6 +97,8 @@ function updateAddresses(zookeeper) {
                 serverVariables.slaves = {...children}.filter( child => {!child.endsWith(smallestChild) })
                 console.log('I am the master')
                 console.log('slaves are: ', serverVariables.slaves)
+            }else{
+                
             }
             const znodeFullPath = `${slaveRegistryZnode}/${regChild}`;
             zookeeper.getData(znodeFullPath, function (error, data, stat) {
